@@ -1,5 +1,5 @@
-import { computed, Injectable, resource, signal } from "@angular/core";
-import { Film } from "../types/film.types";
+import { computed, Injectable, resource, signal } from '@angular/core';
+import { Film } from '../types/film.types';
 
 @Injectable({ providedIn: 'root' })
 export class FilmsService {
@@ -11,17 +11,16 @@ export class FilmsService {
         throw new Error('Failed to fetch films!');
       }
 
-      return await response.json();
+      const films = (await response.json()) as Array<Film>;
+
+      this.films.set(films);
+      return films;
     },
   });
 
-  public readonly films = computed(() => this.filmsResource.value() ?? []);
+  public readonly films = signal<Array<Film>>([]);
 
   public readonly error = computed(() => this.filmsResource.error());
-
   public readonly isLoading = computed(() => this.filmsResource.isLoading());
-
-  public reload(): void {
-    this.filmsResource.reload();
-  }
+  public readonly favoriteFilms = computed(() => this.films().filter((film) => film.isFavorite));
 }

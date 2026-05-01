@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, resource } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { FilmsService } from '../../services/films.service';
 
 @Component({
@@ -7,14 +7,10 @@ import { FilmsService } from '../../services/films.service';
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',
 })
-export class HomePage implements OnInit {
+export class HomePage {
   private readonly filmsService = inject(FilmsService);
 
   public readonly films = computed(() => this.filmsService.films());
   public readonly error = computed(() => this.filmsService.error());
   public readonly isLoading = computed(() => this.filmsService.isLoading());
-
-  public ngOnInit(): void {
-    this.filmsService.reload();
-  }
 }
