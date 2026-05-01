@@ -1,1 +1,11 @@
-<p>home works!</p>
+@if (isLoading()) {
+  <p>Loading films...</p>
+} @else if (error(); as error) {
+  <p style="color: red;">Error: {{ error }}</p>
+} @else {
+  <ul>
+    @for (film of films(); track film.id) {
+      <li>{{ film.title }}</li>
+    }
+  </ul>
+}
